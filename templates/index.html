@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Performance Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 Student Performance Predictor</h1>
+            <p>YuvaIntern Capstone Project | AI & Machine Learning Deployment</p>
+        </header>
+
+        <main>
+            {% if error %}
+            <div class="alert error">
+                ⚠️ {{ error }}
+            </div>
+            {% endif %}
+
+            <form action="/predict" method="POST" class="card">
+                <h2>Input Academic Factors</h2>
+                
+                <div class="form-group">
+                    <label for="study_hours">Daily Study Hours (0 - 24):</label>
+                    <input type="number" step="0.1" name="study_hours" id="study_hours" value="{{ study_hours if study_hours else '6.0' }}" required min="0" max="24">
+                </div>
+
+                <div class="form-group">
+                    <label for="attendance">Attendance Percentage (0 - 100%):</label>
+                    <input type="number" step="0.1" name="attendance" id="attendance" value="{{ attendance if attendance else '85.0' }}" required min="0" max="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="previous_score">Previous Academic Score (0 - 100):</label>
+                    <input type="number" step="0.1" name="previous_score" id="previous_score" value="{{ previous_score if previous_score else '75.0' }}" required min="0" max="100">
+                </div>
+
+                <div class="form-group">
+                    <label for="assignments">Assignments Completed (0 - 15):</label>
+                    <input type="number" name="assignments" id="assignments" value="{{ assignments if assignments else '8' }}" required min="0" max="15">
+                </div>
+
+                <button type="submit" class="btn">Predict Final Score</button>
+            </form>
+
+            {% if prediction is not none %}
+            <div class="card result-card">
+                <h2>Prediction Result</h2>
+                <div class="score-display">{{ prediction }} <span class="max-score">/ 100</span></div>
+                <div class="status-badge {{ status_class }}">
+                    Status: {{ result_status }}
+                </div>
+            </div>
+            {% endif %}
+        </main>
+
+        <footer>
+            <p>&copy; 2026 Student Performance Prediction Project | Capstone Deployment</p>
+        </footer>
+    </div>
+</body>
+</html>
